@@ -1,0 +1,53 @@
+@model List<PostModel>
+
+<div class="row">
+    <div class="col-lg-8" style="min-height: 600px;">
+        <div class="bg-white p-3">
+            <h1 class="h4 mb-4">Popular Post</h1>
+            <hr class="my-3">
+            @foreach (var post in Model)
+            {
+                <div class="card bg-transparent border-0 mb-3">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <img src="~/img/@post.Image" class="img-fluid-rounded"
+                                style="width: 100%; height: auto; max-height: 250px; object-fit: cover; border-radius: 10px;"
+                                alt="@post.Title" />
+                        </div>
+                        <div class="col-lg-8">
+                            <h5>
+                                <a class="btn-link fw-bold"
+                                    href="@Url.Action("Detail", "Post", new { url = post.Url })">@post.Title</a>
+                            </h5>
+                            <p>@Html.Raw(post.Content)</p>
+                            <div>
+                                @foreach (var tag in post.Tags)
+                                {
+                                    <a class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold" href="#">@tag.Text</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-3">
+            }
+
+            <nav>
+                <ul class="pagination justify-content-center">
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                            <a class="page-link"
+                                href="@Url.Action("Index", "Post", new { page = i, tagUrl = ViewBag.TagUrl })">@i</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <vc:tag-menu></vc:tag-menu>
+        <vc:new-post></vc:new-post>
+    </div>
+</div>

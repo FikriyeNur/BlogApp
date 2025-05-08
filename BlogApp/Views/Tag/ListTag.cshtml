@@ -1,0 +1,35 @@
+@model List<TagModel>
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Etiket Listesi</h3>
+        <hr>
+        <a class="btn btn-outline-primary btn-sm mb-3" asp-controller="Tag" asp-action="AddTag">
+            <i class="bi bi-plus"></i> Yeni Etiket
+        </a>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(x => x[0].Text)</th>
+                    <th>@Html.DisplayNameFor(x => x[0].Url)</th>
+                    <th style="width: 150px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Text)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Url)</td>
+                        <td>
+                            <a asp-controller="Tag" asp-action="EditTag" asp-route-id="@item.TagId"
+                                class="btn btn-primary btn-sm">Düzenle</a>
+                            <a asp-controller="Tag" asp-action="DeleteTag" asp-route-id="@item.TagId"
+                                class="btn btn-danger btn-sm">Sil</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

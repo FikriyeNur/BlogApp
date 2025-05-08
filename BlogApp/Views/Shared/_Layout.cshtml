@@ -1,0 +1,71 @@
+@using System.Security.Claims
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="~/css/style.css">
+
+    <title>Document</title>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <div class="container">
+            <a class="navbar-brand text-white fw-bold d-flex align-items-center" asp-controller="Post"
+                asp-action="Index">
+                <i class="bi bi-code-slash fs-4 me-2"></i> BlogApp
+            </a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        @if (User.Identity!.IsAuthenticated)
+                        {
+                            <div class="d-flex align-items-center">
+                                <a href="@Url.Action("Profile", "User", new { userName = @User.Identity.Name})" class="
+                                    me-3 fw-bold text-primary">
+                                    <img src="~/img/@User.FindFirst(ClaimTypes.UserData)?.Value" class="rounded-circle me-1"
+                                        style="width: 30px; height: 30px;">
+                                    @User.Identity.Name
+                                </a>
+                                <a class="btn btn-outline-primary btn-sm me-3" asp-controller="Post" asp-action="PostList">
+                                    <i class="bi bi-list"></i> Gönderi Listesi
+                                </a>
+                                <a class="btn btn-outline-primary btn-sm" asp-controller="User" asp-action="Logout">
+                                    <i class="bi bi-box-arrow-right"></i> Çıkış Yap
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <a class="btn btn-outline-primary btn-sm" asp-controller="User" asp-action="Login">Giriş Yap</a>
+                            <a class="btn btn-outline-primary btn-sm" asp-controller="User" asp-action="Register">Üye Ol</a>
+                        }
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mb-3">
+        <div class="mt-2">
+            <vc:temp-message></vc:temp-message>
+        </div>
+        @RenderBody()
+    </div>
+
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/jquery.validationEngine.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+    @RenderSection("Styles", required: false)
+
+</body>
+
+</html>

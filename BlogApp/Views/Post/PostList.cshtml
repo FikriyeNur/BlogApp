@@ -1,0 +1,44 @@
+@model List<PostModel>
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Gönderi Listesi</h3>
+        <hr>
+        <a class="btn btn-outline-primary btn-sm mb-3" asp-controller="Post" asp-action="AddPost">
+            <i class="bi bi-plus"></i> Yeni Gönderi
+        </a>
+        @if (User.FindFirstValue(ClaimTypes.Role) == "Admin")
+        {
+            <a class="btn btn-outline-primary btn-sm mb-3" asp-controller="Tag" asp-action="ListTag">
+                <i class="bi bi-list"></i> Etiket Listesi
+            </a>
+        }
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th style="width: 200px;">@Html.DisplayNameFor(x => x[0].Image)</th>
+                    <th tyle="width: 200px;">@Html.DisplayNameFor(x => x[0].Title)</th>
+                    <th>@Html.DisplayNameFor(x => x[0].IsActive)</th>
+                    <th style="width: 150px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><img src="~/img/@item.Image" class="img-fluid"
+                                style="max-width: 200px; max-height: 150px; object-fit: cover;"></td>
+                        <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                        <td> @(item.IsActive ? "Evet" : "Hayır")</td>
+                        <td>
+                            <a asp-controller="Post" asp-action="EditPost" asp-route-id="@item.PostId"
+                                class="btn btn-primary btn-sm">Düzenle</a>
+                            <a asp-controller="Post" asp-action="DeletePost" asp-route-id="@item.PostId"
+                                class="btn btn-danger btn-sm">Sil</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

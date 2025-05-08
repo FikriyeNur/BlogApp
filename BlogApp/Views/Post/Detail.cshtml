@@ -1,0 +1,170 @@
+@model PostModel
+
+<div class="row">
+    <div class="col-lg-8 mb-3">
+        <div class="bg-white p-3">
+            <h1 class="h4 mb-4">@Model.Title</h1>
+            <div class="tags">
+                @foreach (var tag in Model.Tags)
+                {
+                    <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold"
+                        href="@Url.Action("Index", "Post", new { tagUrl = tag.Url })">@tag.Text</a>
+                }
+            </div>
+            <img src="~/img/@Model.Image" class="img-fluid-rounded"
+                style="max-width: 100%; max-height: 350px; object-fit: cover; border-radius: 10px;" />
+
+            <ul class="list-inline my-3">
+                <li class="list-inline-item me-3">
+                    <i class="bi bi-person-circle me-1"></i>
+                    <a
+                        href="@Url.Action("Profile", "User", new { userName = Model.User?.UserName })">@Model.User?.UserName</a>
+                </li>
+                <li class="list-inline-item me-3">
+                    <i class="bi bi-calendar me-1"></i> @Model.PublishedDate.ToString("dd.MM.yyyy HH:mm")
+                </li>
+            </ul>
+            <hr />
+            <div>@Html.Raw(Model.Content)</div>
+        </div>
+        <div class="bg-white mt-3">
+            <div class="card border-0">
+                <div class="card-header pb-0">
+                    <h4><span id="commentCount">@Model.Comments.Count()</span> adet yorum</h4>
+                </div>
+                <div class="card-body">
+                    <div id="comments">
+                        @foreach (var comment in Model.Comments)
+                        {
+                            <div class="my-4 d-flex" id="comment-@comment.CommentId">
+                                <img class="avatar rounded-circle float-start me-3" src="/img/@comment.User.Image" />
+                                <div>
+                                    <div class="mb-2 d-flex">
+                                        <h6 class="fw-bold me-2">
+                                            <a
+                                                href="@Url.Action("Profile", "User", new { userName = comment.User.UserName })">
+                                                @comment.User.UserName
+                                            </a>
+                                        </h6>
+                                        <small class="me-2">@comment.PublishedDate.ToString("dd.MM.yyyy HH:mm")</small>
+                                        @if (User.Identity!.IsAuthenticated && User.Identity!.Name == comment.User.UserName)
+                                        {
+                                            <a href="javascript:void(0);"
+                                                onclick="editComment('@comment.CommentId', '@comment.Text')"
+                                                class="me-2 d-inline"><i class="bi bi-pencil-square"></i></a>
+                                            <a href="javascript:void(0);" onclick="deleteComment('@comment.CommentId')"
+                                                class="text-danger me-2"><i class="bi bi-trash"></i></a>
+                                        }
+                                    </div>
+                                    <p>@comment.Text</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <hr class="my-4" />
+                    @if (User.Identity!.IsAuthenticated)
+                    {
+                        <div>
+                            <h4 class="fw-bold">Yorum Ekle</h4>
+                            <form method="post" asp-action="AddComment" asp-controller="Comment">
+                                <input type="hidden" name="PostId" id="PostId" value="@Model.PostId" />
+                                <input type="hidden" name="CommentId" id="CommentId" />
+                                <div class="col-12 mt-3">
+                                    <div class="form-group">
+                                        <textarea type="text" class="form-control" id="Text" name="Text"
+                                            rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-3">
+                                    <button type="submit" class="btn btn-primary btn-sm" id="addComment">Kaydet</button>
+                                </div>
+                            </form>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning" role="alert"> Yorum yapabilmek için
+                            <a href="@Url.Action("Login", "User")" class="alert-link">giriş yapın</a> veya
+                            <a href="@Url.Action("Register", "User")" class="alert-link">kayıt olun</a>.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <vc:tag-menu></vc:tag-menu>
+        <vc:new-post></vc:new-post>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var lastCommentId = localStorage.getItem('lastCommentId');
+            if (lastCommentId) {
+                $('html, body').animate({
+                    scrollTop: $(`#comment-${lastCommentId}`).offset().top - 100
+                }, 500);
+                localStorage.removeItem('lastCommentId');
+            }
+
+            $("#addComment").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("AddOrUpdateComment", "Comment")',
+                    dataType: "json",
+                    data: {
+                        PostId: $("#PostId").val(),
+                        CommentId: $("#CommentId").val(),
+                        Text: $("#Text").val()
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            localStorage.setItem('lastCommentId', response.returnModel.commentId);
+                            location.reload();
+                        } else {
+                            alert("Yorum eklenirken bir hata oluştu.");
+                        }
+                    },
+                    error: function () {
+                        alert("Yorum eklenirken bir hata oluştu.");
+                    }
+                });
+                return false;
+            });
+        });
+
+        function editComment(commentId, text) {
+            $("#CommentId").val(commentId);
+            $("#Text").val(text);
+
+            $('html, body').animate({
+                scrollTop: $("#Text").offset().top - 100
+            }, 500);
+        }
+
+        function deleteComment(commentId) {
+            $("#CommentId").val("");
+            $("#Text").val("");
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("DeleteComment", "Comment")',
+                data: { id: commentId },
+                success: function (response) {
+                    if (response.success) {
+                        $(`#comment-${commentId}`).remove();
+                        var commentCount = parseInt($("#commentCount").text());
+                        $("#commentCount").text(commentCount - 1);
+                    } else {
+                        alert("Yorum silinirken bir hata oluştu.");
+                    }
+                },
+                error: function () {
+                    alert("Yorum silinirken bir hata oluştu.");
+                }
+            });
+        }
+    </script>
+}

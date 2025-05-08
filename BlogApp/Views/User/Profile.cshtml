@@ -1,0 +1,55 @@
+@model UserModel
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="bg-white p-2">
+            <img src="~/img/@Model.Image" class="img-fluid" />
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div class="bg-white p-4">
+            <h5 class="my-2">@Model.FullName</h5>
+            <hr>
+            <div id="posts">
+                <h5 class="my-4">Yayınlanan Gönderiler</h5>
+                <ul class="list-group">
+                    @if (Model.Posts.Count == 0)
+                    {
+                        <li class="list-group-item">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                            Henüz hiç gönderi yayınlanmamış.
+                        </li>
+                    }
+                    @foreach (var post in Model.Posts)
+                    {
+                        <li class="list-group-item">
+                            <i class="bi bi-caret-right-fill"></i>
+                            <a href="@Url.Action("Detail", "Post", new { url = post.Url })">@post.Title</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div id="comments">
+                <h5 class="my-4">Yorumlar</h5>
+                <ul class="list-group">
+                    @if (Model.Comments.Count == 0)
+                    {
+                        <li class="list-group-item">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                            Henüz hiç yorum yapılmamış.
+                        </li>
+                    }
+                    @foreach (var comment in Model.Comments)
+                    {
+                        <li class="list-group-item">
+                            <i class="bi bi-chat-right-text-fill"></i>
+                            @comment.Text
+                            <i> <u><a href="@Url.Action("Detail", "Post", new { url = comment.Post.Url })">[@comment.Post.Title]
+                                    </a></u></i>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

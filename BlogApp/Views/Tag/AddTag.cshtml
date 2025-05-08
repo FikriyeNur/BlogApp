@@ -1,0 +1,26 @@
+@model TagModel
+
+<div class="row">
+    <div class="col-6">
+        <div class="bg-white p-4">
+            <h2>Etiket Ekle</h2>
+            <hr class="mb-3" />
+            <form asp-controller="Tag" asp-action="AddTag" method="post">
+                <div class="form-group mb-3">
+                    <label asp-for="Text" class="form-label"></label>
+                    <span asp-validation-for="Text" class="text-danger"></span>
+                    <input asp-for="Text" class="form-control" />
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Url" class="form-label"></label>
+                    <span asp-validation-for="Url" class="text-danger"></span>
+                    <input asp-for="Url" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-primary me-3">Kaydet</button>
+                <a class="btn btn-outline-primary" asp-controller="Tag" asp-action="ListTag">
+                    <i class="bi bi-list"></i> Etiket Listesi
+                </a>
+            </form>
+        </div>
+    </div>
+</div>

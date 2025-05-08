@@ -1,0 +1,105 @@
+@model PostModel
+
+<div class="row">
+    <div class="col-7">
+        <div class="bg-white p-4">
+            <h2>Yeni Gönderi</h2>
+            <hr class="mb-3" />
+            <form asp-controller="Post" asp-action="AddPost" method="post" enctype="multipart/form-data">
+                <div class="form-group mb-3">
+                    <label asp-for="Title" class="form-label"></label>
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                    <input asp-for="Title" class="form-control" />
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Url" class="form-label"></label>
+                    <span asp-validation-for="Url" class="text-danger"></span>
+                    <input asp-for="Url" class="form-control" />
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Image" class="form-label"></label>
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                    <div class="input-group mb-3">
+                        <input type="file" class="form-control" id="imageFile" name="imageFile">
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Tags" class="form-label"></label>
+                    <span asp-validation-for="SelectedTags" class="text-danger"></span>
+                    <select id="tags" class="form-control select2" multiple>
+                        @foreach (var tag in ViewBag.Tags ?? Enumerable.Empty<SelectListItem>())
+                        {
+                            <option value="@tag.Value">@tag.Text</option>
+                        }
+                    </select>
+                    <input type="hidden" id="SelectedTags" name="SelectedTags" />
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Content" class="form-label"></label>
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                    <textarea asp-for="Content" class="form-control" rows="5"></textarea>
+                </div>
+                @if (User.FindFirstValue(ClaimTypes.Role) == "Admin")
+                {
+                    <div class="form-group mb-3">
+                        <input asp-for="IsActive" class="form-check-input" />
+                        <label asp-for="IsActive" class="form-label"></label>
+                    </div>
+                }
+                <button type="submit" class="btn btn-primary">Kaydet</table></button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/lib/tinymce/tinymce.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+    <script>
+        tinymce.init({
+            selector: '#Content',
+        });
+
+        $(document).ready(function () {
+            $('#tags').select2({
+                placeholder: "Etiket seçin",
+                allowClear: true,
+                tags: true
+            });
+
+            var selectedTags = @Html.Raw(ViewBag.SelectedTags ?? "[]");
+            $('#tags').val(selectedTags).trigger('change');
+
+            $('#tags').on('select2:select select2:unselect', function () {
+                var updatedTags = $(this).val();
+                $('#SelectedTags').val(JSON.stringify(updatedTags));
+            });
+        });
+    </script>
+}
+
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+
+    <style>
+        .select2-container .select2-selection--multiple {
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+            padding: 5px;
+            min-height: 50px;
+        }
+
+        .select2-selection__choice {
+            background-color: #e9ecef;
+            color: #495057;
+            margin: 4px 2px;
+            border-radius: 4px;
+        }
+
+        .select2-selection__choice__remove {
+            color: #6c757d;
+        }
+    </style>
+}

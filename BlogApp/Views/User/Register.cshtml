@@ -1,0 +1,76 @@
+@model UserModel
+
+<div class="row">
+    <div class="col-6">
+        <div class="bg-white p-4">
+            <h2>Üye Ol</h2>
+            <hr class="mb-3" />
+            <form asp-controller="User" asp-action="Register" method="post" enctype="multipart/form-data">
+                <div class="form-group mb-3">
+                    <label asp-for="FullName" class="form-label"></label>
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                    <input asp-for="FullName" class="form-control" />
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="UserName" class="form-label"></label>
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                    <input asp-for="UserName" class="form-control" />
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Image" class="form-label"></label>
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                    <div class="input-group mb-3">
+                        <input type="file" class="form-control" id="imageFile" name="imageFile">
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                    <input asp-for="Email" class="form-control" />
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Password" class="form-label"></label>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                    <div class="input-group">
+                        <input asp-for="Password" type="password" class="form-control password-field" />
+                        <span class="input-group-text togglePassword" style="cursor: pointer;">
+                            <i class="bi bi-eye-slash"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="ConfirmPassword" class="form-label"></label>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    <div class="input-group">
+                        <input asp-for="ConfirmPassword" type="password" class="form-control password-field" />
+                        <span class="input-group-text togglePassword" style="cursor: pointer;">
+                            <i class="bi bi-eye-slash"></i>
+                        </span>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Kayıt Ol</table></button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.togglePassword').click(function () {
+                var passwordField = $(this).siblings('.password-field');
+                var passwordIcon = $(this).find('i');
+
+                if (passwordField.attr('type') === 'password') {
+                    passwordField.attr('type', 'text');
+                    passwordIcon.removeClass('bi-eye-slash');
+                    passwordIcon.addClass('bi-eye');
+                } else {
+                    passwordField.attr('type', 'password');
+                    passwordIcon.removeClass('bi-eye');
+                    passwordIcon.addClass('bi-eye-slash');
+                }
+            });
+        });
+    </script>
+}
