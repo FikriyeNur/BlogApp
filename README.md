@@ -29,6 +29,7 @@ BlogApp, kullanıcıların kayıt olup giriş yapabildiği, blog yazıları ve y
     * Etiketler ile yazıları filtreleyebilir.
     * Kendi profilini görüntüleyebilir ve düzenleyebilir.
 4. Giriş yapılmadıysa kullanıcı login ekranına yönlendirilir.
+   
 
 <img width="1433" alt="Screenshot 2025-05-08 at 15 11 37" src="https://github.com/user-attachments/assets/7b94f3fa-b31f-41c4-bb52-e8bdfe1f751e" />
 
