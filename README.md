@@ -10,7 +10,6 @@ BlogApp, kullanıcıların kayıt olup giriş yapabildiği, blog yazıları ve y
 * FluentValidation (Veri doğrulama)
 * Razor Views (Frontend)
 
-
 🔐 Özellikler
 * ✅ Üyelik Sistemi (Kayıt, Giriş, Çıkış)
 * ✅ Blog Yazısı Paylaşma, Güncelleme, Silme
@@ -20,7 +19,6 @@ BlogApp, kullanıcıların kayıt olup giriş yapabildiği, blog yazıları ve y
 * ✅ Admin Rolü (Admin kullanıcısı için ekstra yetkiler)
 * ✅ Cookie Authentication ile güvenli oturum açma
 * ✅ Giriş Yapmadan İşlem Yapma Yasağı (Yorum yapma, yazı paylaşma vb.)
-
   
 📸 Uygulama Akışı
 1. Kullanıcı kayıt olur veya giriş yapar.
