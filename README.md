@@ -1,7 +1,7 @@
 # 📝 BlogApp - .NET 8 + MySQL
 BlogApp, kullanıcıların kayıt olup giriş yapabildiği, blog yazıları ve yorumlar paylaşabildiği bir ASP.NET Core MVC uygulamasıdır.
 
-🚀 Kullanılan Teknolojiler
+# 🚀 Kullanılan Teknolojiler
 * ASP.NET Core 8 (MVC)
 * Entity Framework Core (Code First)
 * MySQL
@@ -10,7 +10,7 @@ BlogApp, kullanıcıların kayıt olup giriş yapabildiği, blog yazıları ve y
 * FluentValidation (Veri doğrulama)
 * Razor Views (Frontend)
 
-🔐 Özellikler
+# 🔐 Özellikler
 * ✅ Üyelik Sistemi (Kayıt, Giriş, Çıkış)
 * ✅ Blog Yazısı Paylaşma, Güncelleme, Silme
 * ✅ Yorum Yapma ve Listeleme
@@ -20,7 +20,7 @@ BlogApp, kullanıcıların kayıt olup giriş yapabildiği, blog yazıları ve y
 * ✅ Cookie Authentication ile güvenli oturum açma
 * ✅ Giriş Yapmadan İşlem Yapma Yasağı (Yorum yapma, yazı paylaşma vb.)
   
-📸 Uygulama Akışı
+# 📸 Uygulama Akışı
 1. Kullanıcı kayıt olur veya giriş yapar.
 2. Cookie Authentication ile doğrulama yapılır.
 3. Giriş yapan kullanıcı:
