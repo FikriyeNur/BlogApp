@@ -1,4 +1,4 @@
-📝 BlogApp - .NET 8 + MySQL
+# 📝 BlogApp - .NET 8 + MySQL
 BlogApp, kullanıcıların kayıt olup giriş yapabildiği, blog yazıları ve yorumlar paylaşabildiği bir ASP.NET Core MVC uygulamasıdır.
 
 🚀 Kullanılan Teknolojiler
